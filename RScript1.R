@@ -23,3 +23,10 @@ print(var.mc + var.nse*var.se)
 print(var.mc - var.nse*var.se)
 
 print(var.mx)
+
+plot(participants_data_final_control$Change_in_Score)
+plot(participants_data_final_xp$Change_in_Score)
+boxplot(participants_data_final_control$Change_in_Score)
+boxplot(participants_data_final_xp$Change_in_Score)
+hist(participants_data_final_control$Change_in_Score)
+hist(participants_data_final_xp$Change_in_Score)
