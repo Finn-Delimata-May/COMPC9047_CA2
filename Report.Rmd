@@ -1,0 +1,214 @@
+---
+title: "Data Analytics for Immersive Environments"
+output:
+  html_document:
+    df_print: paged
+---
+
+### **Evaluating the Impact of Augmented Reality (AR) on Cognitive Behavioral Therapy (CBT) for Depression**
+
+G-CA1
+
+**Finn Delimata May** D00276939 
+
+**Tish Lloyd-Lucas** D00263110
+
+*5th January 2025*
+
+----
+
+### Table of Contents  
+
+**Abstract **
+
+**Introduction **
+
+**Method **
+
+**Results **
+
+**Discussion **
+
+**References and Github Links** 
+
+-----
+
+### Abstract
+
+This report evaluates data recorded for a test investigating the effectiveness of Virtual Reality for therapy (VR Therapy), compared to traditional Cognitive Behaviour Therapy (CBT). The rationale for this study is to explore the potential of innovative VR-based interventions as an alternative to traditional methods, addressing the growing need for accessible and engaging mental health treatments.
+
+It investigates this by comparing two groups of patients, one treated with VR Therapy, and one with CBT, over a course of twelve weeks. The results for both groups were recorded using a self-scoring system, that basically represented the severity of their depression with a numeric value. 
+
+The change in these scores over the twelve weeks for all participants is investigated, recorded, and used to test a hypothesis on the effectiveness of VR treatment compared to CBT. 
+
+This test involved an evaluation of the data's validity, a check to ensure it meets the required assumptions to be investigated, an establishing of a central limit theorem and confidence interval for the CBT, and a comparison of the VR's mean to this central limit theorem. The t-distribution theory was applied to compare the two collections of data. 
+
+The procedure produced a resulted that concluded that VR treatment can be a viable alternative to traditional CBT, and is actually more effective than it. Further research is recommended for this topic, potentially with a larger sample size.  
+
+----
+
+### Introduction
+
+**Topic and Context** 
+
+"Depression is a pervasive mental health disorder affecting over 264 million people worldwide, as estimated by the World Health Organization. It manifests in various forms, including Major Depressive Disorder and Persistent Depressive Disorder, and is characterized by persistent feelings of sadness, hopelessness, and a lack of interest in daily activities." [1] 
+
+Traditional therapeutic approaches, such as psychotherapy and pharmacotherapy, have long been the mainstays of depression treatment. However, these interventions are not universally effective; some individuals do not respond adequately, and issues like stigma, accessibility, and medication side effects can hinder treatment adherence. This has led to growing interest in innovative therapeutic modalities that can complement or enhance existing treatments. 
+
+**Rationale** 
+
+Virtual Reality (VR) therapy has emerged as a promising alternative for treating depression, offering immersive experiences that engage patients in novel ways. By creating controlled environments where individuals can confront their feelings and experiences, VR facilitates emotional processing and provides a safe space for therapeutic exploration. This project aims to evaluate the efficacy of VR-based interventions within the Cognitive Behavioural Therapy (CBT) framework. Specifically, it investigates whether VR therapy can improve mood, enhance coping strategies, and foster a sense of agency among participants. 
+
+"Simulations in virtual and augmented reality can help patients build confidence and self-esteem, supported by a real-life or virtual therapist." [2]
+
+**Hypothesis** 
+
+We hypothesise that Experimental (VR) therapy will have a different effect than traditional CBT in reducing symptoms of depression. We expect that patients in the AR therapy group will show differences in depression severity, coping strategies, and overall well-being compared to those receiving traditional CBT alone. 
+
+**Null Hypothesis (H0)**: Experimental (VR) therapy is no different to traditional Cognitive Behavioural Therapy (CBT) in reducing depression levels in patients. In other words, there is no significant difference, or CBT is equally effective or more effective than VR in reducing depression levels. 
+
+**Alternative Hypothesis (H1)**: There is a difference between Experimental (VR) therapy and traditional Cognitive Behavioural Therapy (CBT) in reducing depression levels in patients. 
+
+### Method
+
+**Data Cleaning**
+
+No data cleaning was necessary for the data collected. Procedures to determine if it did yielded no results. 
+
+**Meeting Assumptions**
+
+The method for testing the hypothesis being implemented was the t-distribution approach, ([3], Chapter 7). This required two criteria to be tested: The data's independence, and their normality. 
+
+According to the assignment brief, all 200 patients were randomly sampled, so the data are indpendent. 
+
+Testing their normality involved splitting the data into two groups: The control, and the experiment. Each group was greater than 30, which meant that it needed to be checked for no extreme outliers. The histograms below plotted the data [13]: 
+
+```{r}
+library(readxl)
+participants_data_final_control <- read_excel("College Documents/Sem1_Data_Analy
+tics_for_Immersive_Environments/participants_data_final_control.xlsx")
+
+participants_data_final_xp <- read_excel("College Documents/Sem1_Data_Analy
+tics_for_Immersive_Environments/participants_data_final_xp.xlsx")
+```
+
+
+```{r}
+hist(participants_data_final_control$Change_in_Score, col = 011, xlab = "Participant's Change in Score", main = "Control")
+```
+
+```{r}
+hist(participants_data_final_xp$Change_in_Score, col = 111, xlab = "Participant's Change in Score", main = "VR Experiment")
+```
+
+As can be observed, neither data set had any outliers, though the CBT data set was extremely skewed left. However, as such, they satisfied the criteria for normality. 
+
+One final criteria to satisfy was that we were sampling less than 10% of the eligible population. Since 200 participants is less than 10% of the 264,000,000 people suffering from depression, it satisfied this criteria too.
+
+**95% Confidence Interval**
+
+The methodology involved for determing the 95% Confidence Interval, and for comparing the data, also involved using the t-distribution method, which required the means, standard deviations, standard errors, sample size, and degrees of freedom for the data. 
+
+It was decided that the control group would have the 95% Confidence Interval established , as this was the more traditional treatment method. The code below was used to calculate its mean, standard error, sample size (i.e. number of rows), and degrees of freedom [4], [5]:
+
+```{r}
+var.mc = mean(participants_data_final_control$Change_in_Score) 
+var.s = sd(participants_data_final_control$Change_in_Score)
+var.rows = nrow(participants_data_final_control)
+var.df = var.rows - 1
+var.se = var.s/sqrt(var.rows)
+```
+
+The following code was used to get the upper limit for a 95% Confidence Interval for a t-distribution with 99 degrees of freedom, (in terms of number of standard errors away from the mean) [5]:
+
+```{r}
+var.nse = qt(0.975, var.df)
+```
+
+With this value achieved, the upper limit for the 95% Confidence Interval was calculated:
+
+```{r}
+print(var.mc + var.nse*var.se)
+```
+
+And so was the lower limit:
+```{r}
+print(var.mc - var.nse*var.se)
+```
+
+The final bit of calculation was just in getting the mean of the VR Experimental therapy:
+
+```{r}
+print(mean(participants_data_final_xp$Change_in_Score))
+```
+
+### Results
+
+As can be observed, the mean of the VR Experimental therapy (9.11) falls outside the 95% Confidence Interval for the CBT data, (between 6.643 and 8.077). 
+
+As a matter of fact, it is 4.8 standard errors away from the mean, an occurrence that has a 2.4e-04 % chance of occurring: 
+
+```{r}
+(var.mx - var.mc)/var.se
+```
+```{r}
+1-pt(((var.mx - var.mc)/var.se), 99)
+```
+This is far lower than the minimum 5% chance of occurring required for a 95% Confidence Interval. 
+
+### Discussion
+
+**Outline findings and relation to the hypothesis** 
+
+**Support for Alternative Hypothesis (H1)**: The independent t-test results support the alternative hypothesis, indicating some difference in the effectiveness of AR-based therapy compared to traditional CBT in reducing depression levels. 
+
+**Conclusion **
+
+The hypothesis posited that AR-enhanced CBT would lead to a greater reduction in depression symptoms compared to traditional CBT. 
+
+The findings support the hypothesis, as the AR-enhanced CBT group showed a statistically greater reduction in depression scores and demonstrated a higher effect size compared to the control group. 
+
+These results suggest that immersive therapies, such as AR, can enhance emotional processing and engagement in therapeutic settings, potentially leading to better treatment outcomes for individuals with depression. 
+
+**Limitations** 
+
+While the study provides valuable insights, it is limited by its sample size and the short duration of the intervention. Future research should explore long-term effects of AR-enhanced CBT and its applicability across diverse populations. 
+
+Additionally, only one factor, gender, was recorded for each participant. Other factors that could be affecting the results have not been investigated. Future studies should record more factors that could be affecting the results. 
+
+### References and Links
+
+[0] Github Repository for coding practices:
+https://github.com/Finn-Delimata-May/COMPC9047_CA2
+
+[1] World Health Organization, 2022. Depression. [online] Available at: <https://www.who.int/news-room/fact-sheets/detail/depression> [Accessed 3 January 2025] 
+
+[2] Carlson, C.G., 2023. Virtual and Augmented Simulations in Mental Health. Current Psychiatry Reports, 25, pp.365-371 
+
+[3] "OpenIntro Statistics, Fourth Edition," y David Diez, Mine Cetinkya-Rundel, and Christopher D Barr, published 2019 online
+https://2425-moodle.dkit.ie/pluginfile.php/806261/mod_resource/content/1/openintro-statistics.pdf
+
+[4] "Get the number of rows and columns in R" Safa Mulani, published August 2022 on Digital Ocean, 
+https://www.digitalocean.com/community/tutorials/get-number-of-rows-and-columns-in-r
+
+[5] "R-Variables," tutorials point, 
+https://www.tutorialspoint.com/r/r_variables.htm
+
+[6] "Using R to calculate in the t-Distribution," Equitable Equations, uploaded to YouTube August 2020.
+https://www.youtube.com/watch?v=ofg885kdFQU
+
+[7] "R Notebook for dummies: save and share results easily" Bishwarp Paul, June 2020, published in The Startup. 
+https://medium.com/swlh/r-notebook-for-dummies-save-and-share-results-easily-51d343a4882
+
+[8] Friedman, L.M., Furberg, C.D., DeMets, D.L., Reboussin, D.M. and Granger, C.B., 2015. Fundamentals of Clinical Trials. 5th ed. Springer. 
+
+[9] Cohen, J., 1988. Statistical Power Analysis for the Behavioral Sciences. 2nd ed. Lawrence Erlbaum Associates. 
+
+[10]Zung, W.W., 1965. A self-rating depression scale. Archives of General Psychiatry, 12(1), pp.63-70. 
+
+[11]World Medical Association, 2013. WMA Declaration of Helsinki – Ethical Principles for Medical Research Involving Human Subjects. 
+
+[12] Carlson, C.G., 2023. Virtual and Augmented Simulations in Mental Health. Current Psychiatry Reports, 25, pp.365-371 
+
+[13] "How to Make a Histogram in Base R" last updated July 2024, on datacamp, 
+https://www.datacamp.com/tutorial/make-histogram-basic-r
